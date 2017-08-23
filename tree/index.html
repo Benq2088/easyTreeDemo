@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>tree</title>
+    <link rel="stylesheet" href="css/tree.css">
+</head>
+<body>
+<div id="treeContainer" class="treeContainer">
+	<!-- <div class="treeItem">
+		<div class="treeTitle">一级栏目名称</div>
+		<ul>
+			<li>二级栏目1</li>
+			<li>二级栏目2</li>
+			<li>二级栏目3</li>
+		</ul>
+	</div>
+	<div class="treeItem">
+		<div class="treeTitle">一级栏目名称</div>
+		<ul>
+			<li>二级栏目1</li>
+			<li>二级栏目2</li>
+			<li>二级栏目3</li>
+			<li>
+				<div class="treeItem">
+					<div class="treeTitle">二级栏目名称</div>
+					<ul>
+						<li>三级栏目1</li>
+						<li>三级栏目2</li>
+						<li>三级栏目3</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div> -->
+</div>
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/data.js"></script>
+<script>
+$(function(){
+	initTree($("#treeContainer"),treeData);
+});
+/**
+ * obj 容器
+ * data 数据
+ */
+function initTree(obj, data){
+	$(data).each(function(i,item){
+		var pElt = $('<div class="treeItem"><div class="treeTitle">'+ item.name +'</div></div>');
+		if(item.children.length > 0){//有子节点
+			pElt.append('<ul class="ul"></ul>');
+			$(item.children).each(function(){
+				if(this.children.length > 0){
+					pElt.find('.ul').first().append('<li></li>');
+					initTree(pElt.find('.ul li').last(), this);
+				}else{
+					pElt.find(".ul").first().append('<li>'+ this.name +'</li>');
+				}
+			});
+		}
+		obj.append(pElt);
+	});
+}
+$(document).on('click','.treeTitle',function(event){
+	$(this).next().toggle();
+	event.stopPropagation()
+	event.preventDefault();
+})
+</script>
+</body>
+</html>
